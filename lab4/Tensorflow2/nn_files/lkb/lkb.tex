@@ -1,0 +1,354 @@
+%description: An Article with a Title Page
+
+% Preamble
+\documentclass[a4paper,11pt]{article}
+\usepackage{polski}
+\usepackage[cp1250]{inputenc}
+\usepackage[width = 14cm, height = 20cm]{geometry}
+%\usepackage[polish]{babel}
+%\usepackage[utf8]{inputenc}	
+%\usepackage{polski}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{algorithm2e}
+\usepackage{xcolor}
+\usepackage{cite}
+\usepackage{epigraph}
+\usepackage{url}
+%\input{AlgorithmStyle}
+
+\newcommand{\la}{\leftarrow}
+\newcommand{\ra}{\rightarrow}
+\newcommand{\RR}{{\mathbb R}}
+\newcommand{\nat}{{\mathbb N}}
+\newcommand{\mb}[1]{\mathbf{#1}}
+\newcommand{\thk}[1]{\theta^{(#1)}}
+
+
+\newcommand{\be}[1]{\begin{equation}\label{#1}}
+\newcommand{\ee}{\end{equation}}
+
+\newtheorem{lemma}{Lemat}
+\newtheorem{theorem}{Twierdzenie}
+
+%\epigraphfontsize{\small\itshape}
+\setlength\epigraphwidth{8cm}
+%\setlength\epigraphrule{0pt}
+
+
+
+
+\newcommand{\myeq}[2]{\begin{equation} \label{#1}#2 \end{equation}}
+\newcommand{\myeqal}[2]{\begin{align} \label{#1}#2 \end{align}}
+\newcommand{\myeqna}[2]{\begin{eqnarray} \label{#1}#2 \end{eqnarray}}
+
+
+
+% Document
+
+\begin{document}
+
+
+\section{Liniowa klasyfikacja binarna}
+Rozpatrzmy dwa abstrakcyjne zbiory danych ró¿ni¹cych siê ontologi¹, zak³adaj¹c, ¿e lokalizuj¹ siê one w $n$-wymiarowej przestrzeni euklidesowej  $\RR^n$. W ogólnoœci przestrzeñ, której elementy poddawane s¹  zadaniom uczenia maszynowego nazywamy \textsl{przestrzeni¹ cech}.
+Rozpoczynamy od zdefiniowania wzorców klas -  tutaj s¹ to dwa pojedyncze punkty $u^{(1)},\ u^{(2)}$ ('pojedynczoœæ' wzorców klas  umo¿liwi istnienie jednoznacznego rozwi¹zania analitycznego  klasyfikacji).  Klasy bêdziemy okreœlaæ  symbolami $C^{(1)}$ oraz $C^{(2)}$ i definiujemy je przez relacjê bliskoœci elementów wzglêdem wzorców $u^{(1)}$ i $u^{(2)}$, przyjmuj¹c jako miarê odleg³oœci metrykê euklidesow¹ (poni¿ej symbol $\|\cdot\|$ oznacza normê euklidesow¹):
+
+\myeq{eq:r1}{
+C^{(1)}=\left \{x\in \RR^n : ||x-u^{(1)}|| < ||x-u^{(2)}|| \right \},
+}
+i analogicznie 
+\myeq{eq:r2}{
+C^{(2)}=\left \{x\in R^n : ||x-u^{(2)}|| < ||x-u^{(1)}|| \right \}
+}
+Traktuj¹c wektory jako macierze kolumnowe,  uczciwa granica pomiêdzy klasami  $C^{(1)}$ i $C^{(2)}$ jest zbiorem punktów bêd¹cych rozwi¹zaniem  równania
+\myeq{eq:r3}{
+\|x - u^{(1)}\|= \|x - u^{(2)}\|
+}
+
+\myeq{eq:r3prim}{
+(x-u^{(1)})^{T}(x-u^{(1)})=(x-u^{(2)})^{T}(x-u^{(2)})
+}
+
+Ponadto
+\myeqal{eq:r3bis}{
+x^{T} x - x^{T}u^{(1)} - u^{(1)^{T}} x^{(1)} + u^{(1)^{T}} u^{(1)}&=\\
+||x||^{2} - ||u^{(1)}||^{2} - x^{T} u^{(1)} + u^{(1)^{T}} x\nonumber&
+}
+St¹d 
+\myeqna{eq:r4}{
+||x||^{2} + ||u^{(1)}||^{2} - x^{T} u^{(1)} - u^{(1)^{T}} x&=&||x||^{2} + ||u^{(2)}||^{2} - x^{T} u^{(2)} - u^{(2)^{T}} x\nonumber\\
+||u^{(1)}||^2 - ||u^{(2)}||^{2} &=& x^{T} u^{(1)} - x^{T} u^{(2)} + u^{(1)^{T}} x - u^{(2)^{T}x}\nonumber\\
+||u^{(1)}||^2 - ||u^{(2)}||^{2} &=& x^{T}(u^{1}-u^{2}) + (u^{(1)^{T}}-u^{(2)^{T}}) x\nonumber\\
+||u^{(1)}||^2 - ||u^{(2)}||^{2} &=& x^{T}(u^{1}-u^{2}) + (u^{(1)}-u^{(2)})^{T} x\nonumber\\
+||u^{(1)}||^2 - ||u^{(2)}||^{2} &=& [(u^{1}-u^{2})^{T} x]^{T} + (u^{(1)}-u^{(2)})^{T} x\nonumber\\
+||u^{(1)}||^2 - ||u^{(2)}||^{2} &=& (u^{1}-u^{2})^{T} x +(u^{(1)}-u^{(2)})^{T} x\nonumber\\
+||u^{(1)}||^2 - ||u^{(2)}||^{2} &=& 2(u^{1}-u^{2})^{T} x\nonumber\\
+\frac{1}{2} \left ( ||u^{(1)}||^{2}-||u^{(2)}||^{2} \right ) &=& (u^{(1)}-u^{(2)})^{T}x
+}
+
+Powy¿sze równanie jest równaniem hiperp³aszczyzny rozdzielaj¹cej  elementy klas w przestrzeni  $\RR^{n}$. Równanie (\ref{eq:r4})  jest równowa¿ne nastêpuj¹cej formule:
+\myeq{eq:r5}{
+w^{T}x=\overline{w}_{0},
+}
+gdzie
+\myeq{eq:r6}{
+w^T=(u^{(1)}-u^{(2)})^T
+}
+\myeq{eq:r7}{
+\overline{w}_{0}=\frac{1}{2} \left (||u^{(1)}||^{2}-||u^{(2)}||^{2} \right )
+}
+
+W przypadku $n=2$ hiperp³aszczyzna jest prost¹, gdy¿
+
+$$
+{u^{(1)}} = [u^{(1)}_{x}, u^{(1)}_{y}]^T \  \ {u^{(2)}} = [u^{(2)}_{x}, u^{(2)}_{y}]^T\\
+$$
+$$
+x = [x_{1}, x_{2}]^T =: [x, y]^T = \begin{bmatrix} x \\ y 
+\end{bmatrix}
+$$
+$$
+u^{(1)} - u^{(2)} = \begin{bmatrix} u^{(1)}_{x} - u^{(2)}_{x} \\ u^{(1)}_{y} - u^{(2)}_{y}
+\end{bmatrix}
+$$
+$$
+w^T=(u^{(1)} - u^{(2)})^{T} = \begin{bmatrix} u^{(1)}_{x} - u^{(2)}_{x}, u^{(1)}_{y} - u^{(2)}_{y}
+\end{bmatrix}=:\begin{bmatrix} a, b
+\end{bmatrix}$$
+Definiuj¹c
+$$
+-c:=\overline{w}_{0}=w^Tx = \begin{bmatrix} a, b \end{bmatrix} \begin{bmatrix} x, \\ y \end{bmatrix} 
+$$
+otrzymujemy klasyczne równanie prostej w $\RR^2$
+\myeq{eq:r81}{
+ax+by+c=0
+}
+Ilustruje to Rysunek \ref{fig:obrazekprosta}.
+\begin{figure}[h]
+\centering
+\includegraphics[width=7cm]{images_JP/wykres21.png}
+\caption{Prosta rozdzielaj¹ca \label{fig:obrazekprosta} }
+\end{figure}
+Klasy $C^{(1)}$, $C^{(2)}$ s¹ teraz okreœlone przez relacje
+
+\myeq{eq:r9}{
+C^{(1)}=\left \{x\in \RR^n : w^{T}x > \overline{w}_{0},
+ \right \},
+}
+oraz
+\myeq{eq:r10}{
+C^{(2)}=\left \{x\in R^n : w^{T}x < \overline{w}_{0}, \right \}
+}
+
+Ta obserwacja prowadzi do konstrukcji prostego urz¹dzenia, które pobiera $n$-wymiarow¹ dan¹ $x\in\RR^n$, oblicza iloczyn skalarny $w^{T}x$, a nastêpnie sprawdza, czy jego wartoœæ przekracza wartoœæ progow¹ $\overline{w}_0$, czy te¿ nie. Pokazuje to schemat na  Rysunku \ref{fig:klasyfikacja}. Uk³ad obliczaj¹cy iloczyn skalarny oznaczony jest symbolem $\Sigma$, natomiast uk³ad sprawdzaj¹cy relacjê wzglêdem progu oznaczony jest symbolem $UP$. Te dwa elementy jako ca³oœæ okreœlane s¹ nazw¹ \textsl{Jednostka liniowa z progiem} (w skrócie \textsl{LTU} - Linear Treshhold Unit) \index{LTU}\index{jednostka liniowa z progiem}. LTU zwraca wartoœæ zale¿nie od relacji iloczynu skalarnego wzglêdem progu. Je¿eli jego wartoœæ przekracza wartoœæ progow¹, to na wyjœciu pojawia siê wartoœæ 1, a w przeciwnym przypadku wartoœæ -1. Technicznie wygl¹da to tak, ¿e uk³ad $UP$ oblicza wartoœæ funkcji proguj¹cej $f$ na argumencie $w^Tx$, przy czym funkcja proguj¹ca ma postaæ (lewy wykres na Rysunku \ref{fig:prog})
+\myeq{eq:r11}{
+f(h)=\left \{ 
+\begin{array}{ll}
+-1&\hbox{je¿eli }h \leq \overline{w}_{0}\\
+1&\hbox{je¿eli }h > \overline{w}_{0}
+\end{array} 
+\right.
+}
+Funkcja z uk³adu $UP$ jest w ogólnoœci nazywana w teorii sztucznych sieci neuronowych \textsl{funkcj¹ aktywacji} (pe³na nazwa: \textsl{funkcja aktywacji sztucznego neuronu}), gdy¿ uk³ad LTU jest pewnym modelem rzeczywistego neuronu w ludzkim mózgu. 
+ 
+Odnosz¹c siê  do wczeœniej utworzonych dwóch klas, je¿eli dla pewnego $x\in\RR^n$ LTU zwraca  1, to $x$ nale¿y do klasy $C^{(1)}$, a w przeciwnym przypadku nale¿y do klasy $C^{(2)}$. Taki uk³ad LTU mo¿na uogólniæ tak, aby  wartoœæ progowa zawsze wynosi³a 0. 
+
+Osi¹gane jest to poprzez dodanie do uk³adu  dodatkowego wejœcia  o sta³ej wartoœci $1$, co oznacza, ¿e dana wejœciowa nale¿y do przestrzeni cech $\RR^{n+1}$. Zmodyfikowany uk³ad przedstawiony jest na Rysunku \ref{fig:klasyfikacjaprog}. Uk³ad $\Sigma$ oblicza teraz iloczyn skalarny $\overline{w}^{T} \overline{x}$, gdzie
+
+\myeq{eq:r12}{
+w^T = [- \overline{w}_{0} \ w_{1} \dots \ w_{n}],\ \ \ \ x^T = [1 \ x_{1} \dots \ x_{n}],
+}
+natomiast hiperp³aszczyzna rozdzielaj¹ca jest definiowana przez równanie
+\myeq{eq:r13}{
+\overline{w}^{T} \overline{x}=0.
+}
+Analogicznie wzorce  $u^{(1)},\ u^{(2)}$ przechodz¹ do  rozszerzonej przestrzeni cech $R^{n+1}$ i przybieraj¹  postaæ:
+\myeq{eq:r14}{
+\overline{u}^{(1)}= \left[ \begin{array}{c}
+1 \\
+u^{(1)}
+\end{array} \right]
+= \left[ \begin{array}{c}
+1 \\
+u^{(1)}_{1} \\
+\dots \\
+u^{(1)}_{n}
+\end{array} \right]
+\ \ \ \ \ 
+\overline{u}^{(2)}= \left[ \begin{array}{c}
+1 \\
+u^{(2)}
+\end{array} \right]
+= \left[ \begin{array}{c}
+1 \\
+u^{(2)}_{1} \\
+\dots \\
+u^{(2)}_{n}
+\end{array} \right]
+}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=7cm, angle=-1]{images_JP/wykres22.png}
+\caption{Uk³ad klasyfikuj¹cy (n=2) \label{fig:klasyfikacja}}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=7cm]{images_JP/wykres23.png}
+\caption{Charakterystyka (funkcja przejœcia) uk³adu progowego L=UP, P=$UP_{0}$ z progiem zerowym \label{fig:prog}}
+\end{figure}
+
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=7cm, angle=1]{images_JP/wykres24.png}
+\caption{Uk³ad klasyfikuj¹cy z uk³adem progowym $UP_{0}$ z progiem zerowym \label{fig:klasyfikacjaprog} }
+\end{figure}
+Uk³ad proguj¹cy (w tym przypadku oznaczony przez ${UP}_0$) pos³uguje siê funkcj¹ aktywacji $f$ postaci (prawy wykres na Rysunku \ref{fig:prog})
+\myeq{eq:r15}{
+f(h)=\left \{ 
+\begin{array}{ll}
+-1&\hbox{je¿eli }h \leq 0\\
+1&\hbox{je¿eli }h > 0
+\end{array} 
+\right.
+}
+
+Istotne jest aby pamiêtaæ, ¿e dzia³anie uzyskanego w ten sposób klasyfikatora ma sens tylko w przypadku, kiedy pierwsza wspó³rzêdna wektora $\overline{x}$ wynosi 1.
+
+\section{Perceptron}
+Poprzednia sekcja pokaza³a, ¿e szukana hiper³aszczyzna jest w ogólnoœci reprezentowana przez równanie (\ref{eq:r13}) (tzn. nale¿y
+do grupy hiper³aszczyn przechodz¹cych przez zero uk³adu wspó³rzêdnych), natomiast funkcjê progow¹ opisuje równanie (\ref{eq:r15}) (tzn. wartoœci¹ progow¹ jest zero). Klasyfikator jest zatem opisany przez funkcjê 
+\myeq{eq:r16}{
+f(\overline{w}^{T} \overline{x}).
+}
+W ogólnoœci funkcja proguj¹ca mo¿e mieæ ró¿n¹ postaæ, wiêc przyjmijmy, ¿e powy¿sz¹ jej postaæ bêdziemy oznaczali przez $sign()$ (signum - funkcja znaku) - jest to standardowe w matematyce oznaczenie dla tej funkcji. Przyjmijmy teraz dodatkowo, ¿e posiadamy wiêcej ni¿ pojedyncze reprezentantów dwóch rozpatrywanych klas. Jasne jest, ¿e wówczas znalezienie hiper³aszczyzny granicznej musi polegaæ w ogólnoœci na rozwi¹zaniu uk³adu nierównoœci i mo¿e w pewnych przypadkach oznaczaæ brak takiej hiper³aszczyzny. Spróbujmy sformu³owaæ rozwi¹zanie tego   zagadnienia  w postaci konstrukcji algorytmu znajduj¹cego  szukan¹ hiper³aszczyznê. Przyjmijmy jednak, ¿e algorytm  znajdzie rozwi¹zanie jedynie w przypadku, gdy ono rzeczywiœcie istnieje (ale jest nieznane). Zatem przyjmuj¹c $\RR^n$ jako przestrzeñ cech oraz zmieniaj¹c oznaczenie wektora $w$ na $\theta$  szukamy klasyfikatora postaci
+ \myeq{eq:r17}{
+y = sign(\overline{\theta}^{T} \overline{x}), \hbox{ gdzie }\   \overline{x},\ \overline{\theta}\in\RR^{n+1}.
+} 
+Rozpocznijmy od precyzyjmego ustalenia postaci algorytmu. Przyjmijmy, ¿e mamy w sumie $m$ reprezentantów obu klas  - oznaczamy ich przez $x_1,x_2,\dots,x_m$ ($m_1$ dla pierwszej  klasy oraz $m_2$ dla drugiej, $m=m_1+m_2$) oraz, ¿e przynale¿noœæ tych reprezentantów do obu klas jest 
+oznaczona przez wartoœci  (etykiety) $y_1,y_2,\dots,y_m$ z zbioru $\{-1,1\}$ (tzn. w jêzyku funkcji klasyfikatora). 
+Zbiór oznaczonych reprezentantów klas nazywamy  \textit{zbiorem treningowym}, dlatego ¿e bêdzie s³u¿y³ do algorytmowi do znalezienia
+poprawnej wartoœci wektora $\theta$ - wartoœæ t¹ oznaczamy przez $\theta^{\ast}$.  
+Przyjmijmy równie¿, ¿e budujemy algorytm krokowego dochodzenia do poprawnej wartoœci wektora $\theta$ - jego postaæ w $k$-tym kroku oznaczamy przez $\theta^{(k)}$ (k=0,1,\dots) - przyjmujemy, ¿e $\theta^{(0)}=0$ (wektor z³o¿ony z samych zer). W $k$-tym kroku algorytm wybiera (losowo, z powtórzeniami) jednego z reprezentantów $x_i$ ze zbioru treningowego i wylicza now¹ wartoœæ wektora $\theta^{(k)}$ pos³uguj¹c siê formu³¹ ($i_k$ oznacza indeks wylosowanego w k-tym kroku elementu zbioru treningowego):
+\begin{equation}
+\label{eq:r18}
+\thk{k}=\left\{
+ \begin{array}{ll}
+\thk{k-1} + \eta y_{i_k}x_{i_k}\ \  &\hbox{ gdy }\ \  y_{i_k}(\thk{k})^Tx_{i_k} < 0,\\
+\thk{k-1}\ \   &\hbox{ w przeciwnym przypadku }
+\end{array}
+\right.,
+\end{equation}
+gdzie $\eta$ jest \textit{sta³¹ szybkoœci uczenia}.
+Wynika z tego, ¿e w $k$-tym kroku wartoœæ $\thk{k}$ zmienia siê tylko w przypadku, gdy wylosowany element zbioru treningowego znajduje siê po niew³aœciwej stronie bie¿¹cej postaci hiperp³aszczyny granicznej (okreœlonej w tym momencie ca³kowicie przez $\thk{k-1}$). 
+Przyjmujemy dodatkowo, ¿e zbiór treningowy jest wspólnie ograniczony, tzn. ¿e istnieje $R>0$ takie, ¿e dla ka¿dego $i=1,2,\dots,n$ 
+$\|x_i\|\leq R$ - to za³o¿enie jest zupe³nie naturalne dla danych z realnego œwiata. Ponadto przyjmujemy, ¿e szukany klasyfikator rzeczywiœcie istnieje oraz, ¿e spe³nia nastêpuj¹cy warunek:
+\myeq{eq:r19}{
+\hbox{istnieje }\ \gamma>0\ \ \  y_{i}(\theta^\ast)^Tx_{i} > \gamma\ \hbox{ takie, ¿e  dla ka¿dego }i=1,2,\dots,m
+}
+Oznacza to, ¿e zak³adamy doœæ dobr¹ jakoœæ klasyfikatora: wszystkie elementy treningowe znajduj¹ siê poza pasem o szerokoœci $2\gamma$ i osi wyznaczonej przez graniczn¹ hiperp³aszczyznê. Ilustruje to Rysunek \ref{fig:percgamma}.
+\begin{figure}[h]
+\centering
+\includegraphics[width=7cm]{images_JP/perceptron_gamma.png}
+\caption{Margines wokó³ hiperp³aszczyzny granicznej \label{fig:percgamma} }
+\end{figure}
+Udowodnimy teraz, ¿e taki algorytm jest zbie¿ny do wartoœci $\theta^\ast$ po skoñczonej iloœci kroków.\\
+
+Najpierw poka¿emy, ¿e iloczyn skalarny z elementów  $\theta^\ast$ oraz $\thk{k}$ roœnie co najmniej liniowo w ka¿dym kroku. Z warunku
+(\ref{eq:r19}) dostajemy, ¿e  dla ka¿dego $i=1,2,\dots,m$
+\myeq{eq:r20}{
+(\theta^{\ast})^T\thk{k} =  (\theta^\ast)^T\thk{k-1} + y_{i}(\theta^\ast)^Tx_{i} > (\theta^\ast)^T\thk{k-1} + \gamma.
+}
+Zatem po $k$ krokach 
+\myeq{eq:r21}{
+(\theta^{\ast})^T\thk{k}  > k\gamma.
+}
+Nastêpnie poka¿emy, jak zmienia siê norma elementu $\thk{k}$ w kolejnych krokach.
+\begin{equation}
+\label{eq:r22}
+ \begin{aligned}
+\|\thk{k}\|^2&=\|\thk{k-1}+ y_{i_k}x_{i_k}\|^2\\
+&=\|\thk{k-1}\|^2+ 2y_{i_k}(\thk{k-1})^Tx_{i_k}+\|x_{i_k}\|^2\\
+&=\|\thk{k-1}\|^2+ \|x_{i_k}\|^2\\
+&=\|\thk{k-1}\|^2+ R^2\\
+\end{aligned}
+\end{equation}
+Przejœcie z linii drugiej do trzeciej wykorzystuje fakt, ¿e zmiana wartoœci $\thk{k}$ nastêpuje tylko wtedy, gdy
+$y_{i_k}(\thk{k-1})^Tx_{i_k}<0$, natomiast przejœcie z linii trzeciej do czwartej opiera siê na za³o¿eniu wspólnej
+ograniczonoœci zbioru treningowego. Zatem
+ \myeq{eq:r23}{
+\|\thk{k}\|^2\leq kR^2.
+} 
+Z równañ (\ref{eq:r21}) oraz (\ref{eq:r23}) dostajemy
+ \myeq{eq:r24}{
+1\leq cos(\theta{^\ast},\thk{k})=\frac{(\theta^{\ast})^T\thk{k} }{\|\thk{k}\|\|\theta^{\ast}\|}\geq
+\frac{k\gamma}{\|\thk{k}\|\|\theta^{\ast}\|}\geq\frac{k\gamma}{R\sqrt{k}\|\theta^{\ast}\|}
+}
+St¹d 
+\myeq{eq:r24}{
+k\leq \frac{R^2\|\theta^{\ast}\|^2}{\gamma^2}
+}
+
+Skoñczonoœæ wszystkich wartoœci po prawej stronie  implikuje, ¿e algorytm musi osi¹gn¹æ rozwi¹zanie po skoñczonej iloœci kroków.
+\subsection{Perceptron z perspektywy teorii optymalizacji}
+Dla pewnej prostoty  równanie hiperp³aszczyzny 
+zapisujemy w postaci $\theta^Tx-\theta_0=0$, czyli w formule (\ref{eq:r5}).
+Ustalmy, ¿e etykiety $y_i=1$ odpowiadaj¹ pó³p³aszczyŸnie o równaniu $\theta^T x-\theta_0\geq 0$, natomiast 
+etykiety $y_i=-1$ pó³p³aszczyŸnie o równaniu $\theta^T x-\theta_0<0$. Wiadomo, ¿e odleg³oœæ punktu $x\in \mathbb{R}^n$ od hiperp³aszczyzny w $\mathbb{R}^n$ wynosi 
+\myeq{eq:r25}{
+\frac{|\theta^Tx-\theta_0|}{\|\theta\|_2}
+}
+
+Je¿eli punkt $x$ jest b³êdnie sklasyfikowany (otrzymujemy wartoœæ ujemn¹ funkcji $sign(\overline{\theta}^{T} \overline{x})$ dla punktu, który powinien le¿eæ powy¿ej prostej i wartoœæ dodatni¹ dla punktu, który powinien le¿eæ poni¿ej prostej), to znakowana odleg³oœæ (czyli wartoœæ czasami ujemna) dla takiego punktu wynosi
+\myeq{eq:r26}{
+Err_z(x) = -\frac{\theta^Tx-\theta_0}{\|\theta\|_2}
+}
+Chc¹c zachowaæ dodani¹ wartoœæ odleg³oœci mo¿emy wykorzystaæ jako mno¿niki etykiety $y_i$ punktów:
+\myeq{eq:r27}{
+Err(x) = -y_i\frac{\theta^Tx-\theta_0}{\|\theta\|_2}
+}
+ 
+Zatem suma po wszystkich Ÿle sklasyfikowanych punktach (zbiór ich indeksów oznaczamy przez $M$) wyra¿a siê formu³¹ (wspó³rzêdne wektorów oznaczamy przez górne indeksy)
+\myeq{eq:r28}{
+E(\theta,\theta_0) = -\frac{1}{\|\theta\|_2}\sum_{i\in M}y_i(\theta^Tx_i-\theta_0)=-\frac{1}{\|\theta\|_2}\sum_{i\in M}y_i\left (\sum_{j=1}^n \theta^jx_i^j-\theta_0\right)
+}
+T¹ funkcjê chcemy zminimalizowaæ metod¹ najwiêkszego spadku\footnote{W jêzyku teorii optymalizacji (równie¿ sieci neuronowych) funkcja, której minimum szukamy i która okreœla istotny b³¹d obliczeniowy, nazywana jest \textit{funkcj¹ kosztu} lub \textit{funkcj¹ straty}.}, wiêc rozpoczynamy od obliczenia gradientu funkcji $E(\theta,\theta_0)$.
+Wtedy otrzymujemy (wektor $\theta$ ma $n$ wspó³rzêdnych)
+\myeq{eq:r29}{
+\frac{\partial E}{\partial \theta^j}(\theta,\theta_0) = -\frac{1}{\|\theta\|_2}\sum_{i\in M}y_ix_i^j
+}
+\myeq{eq:r30}{
+\frac{\partial E}{\partial \theta_0}(\theta,\theta_0) = -\frac{1}{\|\theta\|_2}\sum_{i\in M}y_i
+} 
+Zatem (gradient oznaczamy przez $\nabla$)
+\myeq{eq:r31}{
+\nabla E(\theta,\theta_0)=-\frac{1}{\|\theta\|_2}\left[\sum_{i\in M}y_i,\,\sum_{i\in M}y_ix_i^1,
+\,\sum_{i\in M}y_ix_i^2,\dots,\sum_{i\in M}y_ix_i^n, \right]^T=
+-\frac{1}{\|\theta\|_2}\sum_{i\in M}y_ix_i
+} 
+
+Stosuj¹c metodê stochastycznego najwiêkszego spadku (w pojedynczym kroku
+korzystamy tylko z jednego punktu $x_i$) oraz w³¹czaj¹c mno¿nik
+$\frac{1}{\|\theta\|_2}$ do sta³ej szybkoœci uczenia (w takim przypadku zmienia siê ona w ka¿dym kroku) otrzymujemy wzór (\ref{eq:r18}), co pokazuje, ¿e percepton jest w istocie algorytmem stochastycznego najwiêkszego spadku.\\
+
+
+Algorytm perceptronu posiada dwie g³ówne wady:
+\begin{itemize}
+\item je¿eli dane s¹ separowalne liniowo, to rozwi¹zanie istnieje, ale 
+nie jest jednoznaczne (zale¿y od punktu startowego) i ponadto zbie¿noœæ mo¿e byæ wolna dla gêstego zbioru danych
+\item je¿eli dane nie s¹ separowalne liniowo, to stosowanie algorytmu perceptronu mo¿e powodowaæ pojawianie siê trudnych do wykrycia d³ugich cykli 
+\end{itemize}
+\myeq{eq:r32}{
+\nabla E(\theta,\theta_0)=-\frac{1}{\|\theta\|_2}\left[\sum_{i\in M}y_i,\,\sum_{i\in M}y_ix_i^1,
+\,\sum_{i\in M}y_ix_i^2,\dots,\sum_{i\in M}y_ix_i^n, \right]^T=
+-\frac{1}{\|\theta\|_2}\sum_{i\in M}y_ix_i
+} 
+
+%Spójrzmy teraz na ten problem nieco silniej (odnosi siê to do problemu jednoznacznoœci rozwi¹znia). Za³ó¿my, ¿e chcemy znaleŸæ takie rozwi¹zanie (hiperp³aszczyzn), które maksymalizuje odleg³oœæ punktów od tej hiperp³aszczyzny. Ilustruje to Rysunek \ref{fig:percgamma} (chcemy zmaksymalizowaæ $\gamma$). Formalnie mo¿na to zapisaæ jako zadanie maksymalizacji  odleg³oœci od hiperp³aszczyzny, czyli
+
+
+\end{document}
