@@ -1,3 +1,5 @@
 /plantvillage dataset/
 /.venv/
 /uv.lock
+/data_src/
+/data/
